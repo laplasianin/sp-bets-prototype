@@ -32,7 +32,7 @@ export function PipelineStatus({ active }: Props) {
           <span
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-300 ${
               step === i
-                ? 'bg-blue-600 text-white'
+                ? 'bg-[#E41827] text-white'
                 : step > i
                 ? 'bg-green-600 text-white'
                 : 'bg-gray-800 text-gray-600 border border-gray-700'

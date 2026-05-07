@@ -31,11 +31,9 @@ export default function App() {
     <div className="min-h-screen bg-[#030712] text-white">
       <header className="bg-gray-900 border-b border-gray-800 px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-8 h-8 bg-blue-500 rounded flex items-center justify-center font-black text-sm">S</div>
-          <div>
-            <h1 className="text-base font-bold tracking-tight">Sporty Home <span className="text-gray-500 font-normal">— Bet Settlement Demo</span></h1>
-            <p className="text-xs text-gray-500 mt-0.5">Spring Boot · Kafka · jOOQ · RocketMQ</p>
-          </div>
+          <img src="/sporty-logo-white.svg" alt="Sporty Group" className="h-6" />
+          <span className="text-gray-700 text-lg font-thin">|</span>
+          <p className="text-xs text-gray-500">Bet Settlement Demo</p>
         </div>
         <button
           onClick={handleReset}
@@ -47,15 +45,15 @@ export default function App() {
       </header>
       <main className="max-w-5xl mx-auto px-8 py-8 space-y-4">
         <section className="bg-gray-900 rounded-lg border border-gray-800 p-6 space-y-4">
-          <h2 className="text-xs font-semibold text-blue-400 uppercase tracking-widest">Announce Winner</h2>
+          <h2 className="text-xs font-semibold text-[#E41827] uppercase tracking-widest">Announce Winner</h2>
           <AnnounceWinnerForm onAnnounced={handleAnnounced} />
         </section>
         <section className="bg-gray-900 rounded-lg border border-gray-800 p-6 space-y-4">
-          <h2 className="text-xs font-semibold text-blue-400 uppercase tracking-widest">Pipeline Status</h2>
+          <h2 className="text-xs font-semibold text-[#E41827] uppercase tracking-widest">Pipeline Status</h2>
           <PipelineStatus active={pipelineActive} />
         </section>
         <section className="bg-gray-900 rounded-lg border border-gray-800 p-6 space-y-4">
-          <h2 className="text-xs font-semibold text-blue-400 uppercase tracking-widest">Bets</h2>
+          <h2 className="text-xs font-semibold text-[#E41827] uppercase tracking-widest">Bets</h2>
           <BetsTable pollTrigger={pollTrigger} />
         </section>
       </main>

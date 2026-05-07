@@ -56,7 +56,7 @@ export function AnnounceWinnerForm({ onAnnounced }: Props) {
         <select
           value={eventId}
           onChange={e => handleEventChange(e.target.value)}
-          className="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#E41827] focus:border-transparent"
         >
           {EVENTS.map(ev => (
             <option key={ev.id} value={ev.id}>{ev.name}</option>
@@ -68,7 +68,7 @@ export function AnnounceWinnerForm({ onAnnounced }: Props) {
         <select
           value={winnerId}
           onChange={e => setWinnerId(e.target.value)}
-          className="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#E41827] focus:border-transparent"
         >
           {winners.map(w => (
             <option key={w.id} value={w.id}>{w.label}</option>
@@ -78,7 +78,7 @@ export function AnnounceWinnerForm({ onAnnounced }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className="bg-blue-600 text-white px-6 py-2 rounded font-semibold text-sm hover:bg-blue-700 disabled:opacity-50 transition-colors"
+        className="bg-[#E41827] text-white px-6 py-2 rounded font-semibold text-sm hover:bg-[#c41422] disabled:opacity-50 transition-colors"
       >
         {loading ? 'Sending…' : 'GO'}
       </button>
