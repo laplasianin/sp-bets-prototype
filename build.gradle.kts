@@ -39,6 +39,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-jooq")
     implementation("org.springframework.kafka:spring-kafka")
+    implementation("org.springframework.kafka:spring-kafka-test")   // EmbeddedKafka for railway profile
     runtimeOnly("com.h2database:h2")
 
     implementation("org.mapstruct:mapstruct:$mapstructVersion")

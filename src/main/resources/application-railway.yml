@@ -1,0 +1,8 @@
+spring:
+  h2:
+    console:
+      enabled: false
+
+app:
+  cors:
+    allowed-origins: "*"
