@@ -8,6 +8,11 @@ export async function fetchBets(): Promise<Bet[]> {
   return res.json() as Promise<Bet[]>;
 }
 
+export async function resetBets(): Promise<void> {
+  const res = await fetch(`${BASE}/api/reset`, { method: 'POST' });
+  if (!res.ok) throw new Error(`POST /api/reset failed: ${res.status}`);
+}
+
 export async function announceWinner(
   eventId: string,
   eventName: string,
