@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 html, body, #root {
-  background-color: #030712; /* gray-950 */
+  background-color: #030712 !important;
   color: white;
+  min-height: 100%;
 }
