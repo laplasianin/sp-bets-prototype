@@ -34,14 +34,14 @@ export function PipelineStatus({ active }: Props) {
               step === i
                 ? 'bg-blue-600 text-white'
                 : step > i
-                ? 'bg-green-500 text-white'
-                : 'bg-gray-200 text-gray-500'
+                ? 'bg-green-600 text-white'
+                : 'bg-gray-800 text-gray-600 border border-gray-700'
             }`}
           >
             {stage}
           </span>
           {i < STAGES.length - 1 && (
-            <span className={`font-bold transition-colors ${step > i ? 'text-green-500' : 'text-gray-300'}`}>
+            <span className={`font-bold transition-colors ${step > i ? 'text-green-500' : 'text-gray-700'}`}>
               →
             </span>
           )}
