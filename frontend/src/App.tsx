@@ -33,7 +33,10 @@ export default function App() {
         <div className="flex items-center gap-4">
           <img src="/sporty-logo-white.svg" alt="Sporty Group" className="h-6" />
           <span className="text-gray-700 text-lg font-thin">|</span>
-          <p className="text-xs text-gray-500">Bet Settlement Demo</p>
+          <div>
+            <p className="text-xs text-gray-400 font-medium">Bet Settlement Demo</p>
+            <p className="text-xs text-gray-600 mt-0.5">Spring Boot · Kafka · jOOQ · RocketMQ</p>
+          </div>
         </div>
         <button
           onClick={handleReset}
