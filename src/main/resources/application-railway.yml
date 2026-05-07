@@ -1,3 +1,6 @@
+server:
+  port: ${PORT:8080}
+
 spring:
   h2:
     console:
@@ -8,4 +11,5 @@ spring:
 
 app:
   cors:
+    # DEMO ONLY — tighten to actual frontend URL before any real use
     allowed-origins: "*"

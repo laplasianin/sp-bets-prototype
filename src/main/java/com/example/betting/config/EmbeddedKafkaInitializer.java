@@ -10,14 +10,12 @@ import java.util.Map;
 
 public class EmbeddedKafkaInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-    private static EmbeddedKafkaBroker broker;
-
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
         if (!applicationContext.getEnvironment().matchesProfiles("railway")) {
             return;
         }
-        broker = new EmbeddedKafkaKraftBroker(1, 1, "event-outcomes", "event-outcomes.DLT");
+        EmbeddedKafkaBroker broker = new EmbeddedKafkaKraftBroker(1, 1, "event-outcomes", "event-outcomes.DLT");
         try {
             broker.afterPropertiesSet();
         } catch (Exception e) {
@@ -27,8 +25,6 @@ public class EmbeddedKafkaInitializer implements ApplicationContextInitializer<C
                 .addFirst(new MapPropertySource("embedded-kafka", Map.of(
                         "spring.kafka.bootstrap-servers", broker.getBrokersAsString()
                 )));
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            if (broker != null) broker.destroy();
-        }));
+        Runtime.getRuntime().addShutdownHook(new Thread(broker::destroy));
     }
 }
