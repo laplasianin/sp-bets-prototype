@@ -1,6 +1,22 @@
 # Sporty Home — Kafka & RocketMQ Bet Settlement Service
 
-A Spring Boot backend that simulates sports betting event outcome handling and bet settlement via Kafka and a mock RocketMQ broker.
+A Spring Boot backend + React frontend that simulates sports betting event outcome handling and bet settlement via Kafka and a mock RocketMQ broker.
+
+## Live Demo
+
+**[https://dazzling-success-production-78c2.up.railway.app/](https://dazzling-success-production-78c2.up.railway.app/)**
+
+Try the full pipeline in the browser:
+
+1. **Pick an event and winner** in the "Announce Winner" form, click **GO**
+2. **Watch the pipeline** animate: API → Kafka → Settlement → DB
+3. **See bets update** in the table — WON bets get `payout = amount × 2`, LOST get `0.00`
+4. Click **Reset Demo** to restore all 5 bets to `PENDING` and repeat
+
+| Event | Bettors |
+|-------|---------|
+| Real Madrid vs Barcelona (evt-1) | user-1 → Real Madrid · user-2 → Barcelona · user-3 → Real Madrid |
+| Arsenal vs Chelsea (evt-2) | user-4 → Arsenal · user-5 → Chelsea |
 
 ## Architecture
 
@@ -29,45 +45,39 @@ EventOutcomeConsumer
          • persists status + payout + settled_at via jOOQ
 ```
 
-**Tech stack:** Java 21 · Spring Boot 3.3 · Gradle (Kotlin DSL) · jOOQ (DDLDatabase codegen) · Spring Kafka · H2 in-memory · MapStruct
+**Tech stack:** Java 21 · Spring Boot 3.3 · Gradle (Kotlin DSL) · jOOQ (DDLDatabase codegen) · Spring Kafka · H2 in-memory · MapStruct · React 18 · Vite · TypeScript · Tailwind CSS
+
+**Railway deployment:** EmbeddedKafkaKraftBroker runs inside the JVM via `ApplicationContextInitializer` — no external Kafka service needed.
 
 **RocketMQ note:** The `BetSettlementProducer` interface is production-ready for swap — add `spring-rocketmq-starter` + `@Profile("rocketmq")` implementation to go live.
 
-## Prerequisites
+## Running Locally
 
-- Docker (for Kafka)
-- Java 21+
+### Backend
 
-## Running
-
-### 1. Start Kafka
+Prerequisites: Java 21+, Docker (for external Kafka — or skip with `--no-kafka` profile)
 
 ```bash
+# Start Kafka
 docker-compose up -d
-```
 
-### 2. Start the application
-
-```bash
+# Start backend
 ./gradlew bootRun
 ```
 
-The app starts on `http://localhost:8080`.
+Backend starts on `http://localhost:8080`.
 
-H2 Console available at `http://localhost:8080/h2-console`  
-(JDBC URL: `jdbc:h2:mem:betsdb`, user: `sa`, password: empty)
+H2 Console: `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:betsdb`, user: `sa`, password: empty)
 
-### 3. Seed data
+### Frontend
 
-Five sample bets are pre-loaded:
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-| Bet ID | User   | Event  | They picked  | Amount |
-|--------|--------|--------|--------------|--------|
-| 1      | user-1 | evt-1  | team-real    | 100.00 |
-| 2      | user-2 | evt-1  | team-barca   | 200.00 |
-| 3      | user-3 | evt-1  | team-real    | 50.00  |
-| 4      | user-4 | evt-2  | team-arsenal | 150.00 |
-| 5      | user-5 | evt-2  | team-chelsea | 75.00  |
+Frontend starts on `http://localhost:5173`, proxies `/api` to `localhost:8080`.
 
 ## API
 
@@ -76,45 +86,34 @@ Five sample bets are pre-loaded:
 ```bash
 curl -X POST http://localhost:8080/api/event-outcomes \
   -H "Content-Type: application/json" \
-  -d '{
-    "eventId": "evt-1",
-    "eventName": "Real Madrid vs Barcelona",
-    "winnerId": "team-real"
-  }'
+  -d '{"eventId":"evt-1","eventName":"Real Madrid vs Barcelona","winnerId":"team-real"}'
 ```
 
 Response: `202 Accepted`
-```json
-{
-  "eventId": "evt-1",
-  "acceptedAt": "2026-05-07T10:00:00Z"
-}
-```
 
-### Check bet settlement results
+### Check bets
 
 ```bash
-# All bets
 curl http://localhost:8080/api/bets
-
-# Single bet
 curl http://localhost:8080/api/bets/1
 ```
 
-After publishing `evt-1` with `winnerId=team-real`:
-- Bet 1 → **WON**, payout = 200.00
-- Bet 2 → **LOST**, payout = 0.00
-- Bet 3 → **WON**, payout = 100.00
+### Reset demo data
 
-## Running Tests
+```bash
+curl -X POST http://localhost:8080/api/reset
+```
+
+After settling `evt-1` with `winnerId=team-real`:
+- Bet 1 (user-1, team-real) → **WON**, payout = 200.00
+- Bet 2 (user-2, team-barca) → **LOST**, payout = 0.00
+- Bet 3 (user-3, team-real) → **WON**, payout = 100.00
+
+## Tests
 
 ```bash
 ./gradlew test
 ```
-
-Tests use `EmbeddedKafka` — no Docker needed for tests.
-
-### Test coverage
 
 | Test | What it covers |
 |------|----------------|
@@ -129,8 +128,6 @@ Tests use `EmbeddedKafka` — no Docker needed for tests.
 |---------|--------|
 | WON | `bet_amount × 2` |
 | LOST | `0.00` |
-
-Odds are not part of the spec; fixed 2× multiplier is used.
 
 ## What is NOT implemented
 
